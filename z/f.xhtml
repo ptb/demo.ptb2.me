@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Hi.</title>
+    <style>
+      .button-label {
+        font-weight: bold;
+      }
+      .button-label:hover {
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg">
+        <style>
+          g.button:hover {
+            opacity: 0.75;
+          }
+          .button-label {
+            font-size: 24px;
+          }
+          .draggable {
+            cursor: move;
+          }
+        </style>
+        <script type="application/ecmascript">
+          <![CDATA[
+          function buttonClick(evt) {
+            console.log(evt);
+          }
+          var selectedElement = 0;
+          var currentX = 0;
+          var currentY = 0;
+          var currentMatrix = 0;
+
+          function selectElement(evt) {
+            selectedElement = evt.target;
+            currentX = evt.clientX;
+            currentY = evt.clientY;
+            currentMatrix = selectedElement.getAttributeNS(null, "transform").slice(7,-1).split(" ");
+
+            for(var i=0; i<currentMatrix.length; i++) {
+              currentMatrix[i] = parseFloat(currentMatrix[i]);
+            }
+
+            selectedElement.setAttributeNS(null, "onmousemove", "moveElement(evt)");
+            selectedElement.setAttributeNS(null, "onmouseout", "deselectElement(evt)");
+            selectedElement.setAttributeNS(null, "onmouseup", "deselectElement(evt)");
+          }
+
+          function moveElement(evt) {
+            var dx = evt.clientX - currentX;
+            var dy = evt.clientY - currentY;
+            currentMatrix[4] += dx;
+            currentMatrix[5] += dy;
+
+            selectedElement.setAttributeNS(null, "transform", "matrix(" + currentMatrix.join(" ") + ")");
+            currentX = evt.clientX;
+            currentY = evt.clientY;
+          }
+
+          function deselectElement(evt) {
+            if (selectedElement != 0) {
+              selectedElement.removeAttributeNS(null, "onmousemove");
+              selectedElement.removeAttributeNS(null, "onmouseout");
+              selectedElement.removeAttributeNS(null, "onmouseup");
+              selectedElement = 0;
+            }
+          }
+          ]]>
+        </script>
+        <g class="button" cursor="pointer" onmouseup="buttonClick(evt)">
+          <rect x="20" y="1" rx="5" ry="5" width="52" height="22" fill="#f00"/>
+          <text class="button-label" x="25" y="16">Button</text>
+        </g>
+        <rect class="draggable" x="30" y="30" width="80" height="80" fill="blue" transform="matrix(1 0 0 1 0 0)" onmousedown="selectElement(evt)"/>
+      </svg>
+</div>
+    <div><object type="image/svg+xml" data="c.svg"/></div>
+    <div><object type="image/svg+xml" data="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%3E%20%3Cstyle%3E%20g.button:hover%20%7B%20opacity:%200.75;%20%7D%20.button-label%20%7B%20font-size:%2024px;%20%7D%20.draggable%20%7B%20cursor:%20move;%20%7D%20%3C/style%3E%20%3Cscript%20type='application/ecmascript'%3E%20%3C!%5BCDATA%5B%20function%20buttonClick(evt)%20%7B%20console.log(evt);%20%7D%20var%20selectedElement%20=%200;%20var%20currentX%20=%200;%20var%20currentY%20=%200;%20var%20currentMatrix%20=%200;%20function%20selectElement(evt)%20%7B%20selectedElement%20=%20evt.target;%20currentX%20=%20evt.clientX;%20currentY%20=%20evt.clientY;%20currentMatrix%20=%20selectedElement.getAttributeNS(null,%20'transform').slice(7,-1).split('%20');%20for(var%20i=0;%20i%3CcurrentMatrix.length;%20i++)%20%7B%20currentMatrix%5Bi%5D%20=%20parseFloat(currentMatrix%5Bi%5D);%20%7D%20selectedElement.setAttributeNS(null,%20'onmousemove',%20'moveElement(evt)');%20selectedElement.setAttributeNS(null,%20'onmouseout',%20'deselectElement(evt)');%20selectedElement.setAttributeNS(null,%20'onmouseup',%20'deselectElement(evt)');%20%7D%20function%20moveElement(evt)%20%7B%20var%20dx%20=%20evt.clientX%20-%20currentX;%20var%20dy%20=%20evt.clientY%20-%20currentY;%20currentMatrix%5B4%5D%20+=%20dx;%20currentMatrix%5B5%5D%20+=%20dy;%20selectedElement.setAttributeNS(null,%20'transform',%20'matrix('%20+%20currentMatrix.join('%20')%20+%20')');%20currentX%20=%20evt.clientX;%20currentY%20=%20evt.clientY;%20%7D%20function%20deselectElement(evt)%20%7B%20if%20(selectedElement%20!=%200)%20%7B%20selectedElement.removeAttributeNS(null,%20'onmousemove');%20selectedElement.removeAttributeNS(null,%20'onmouseout');%20selectedElement.removeAttributeNS(null,%20'onmouseup');%20selectedElement%20=%200;%20%7D%20%7D%20%5D%5D%3E%20%3C/script%3E%20%3Cg%20class='button'%20cursor='pointer'%20onmouseup='buttonClick(evt)'%3E%20%3Crect%20x='20'%20y='1'%20rx='5'%20ry='5'%20width='52'%20height='22'%20fill='%23f00'/%3E%20%3Ctext%20class='button-label'%20x='25'%20y='16'%3EButton%3C/text%3E%20%3C/g%3E%20%3Crect%20class='draggable'%20x='30'%20y='30'%20width='80'%20height='80'%20fill='blue'%20transform='matrix(1%200%200%201%200%200)'%20onmousedown='selectElement(evt)'/%3E%20%3C/svg%3E"/></div>
+    <div><img src="c.svg" alt="img"/></div>
+    <p>lipsum</p>
+    <script>
+      /*<![CDATA[*/
+      /*]]>*/
+    </script>
+    <article>
+      <h1>Style Scoped</h1>
+      <p>The scoped attribute for the style element will eventually allow for you to include style elements mid-document. To do this, you must mark up your style element with the scoped attribute.</p>
+      <section>
+        <style scoped="scoped">
+          p { color: red; }
+        </style>
+        <h2>How does it work?</h2>
+        <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+      </section>
+    </article>
+  </body>
+</html>

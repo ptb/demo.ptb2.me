@@ -1,0 +1,1 @@
+CC=clang ./configure --prefix=/usr/local --enable-gui=yes --without-x --enable-multibyte --with-tlib=ncurses --enable-cscope --with-features=huge --enable-pythoninterp --enable-rubyinterp --enable-perlinterp --with-compiledby=ptb@ioutime.com
